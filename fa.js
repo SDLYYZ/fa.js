@@ -33,7 +33,7 @@ http.createServer(async (req, res) => {
         const randomID = crypto.randomBytes(16).toString('hex'),
               aiffFile = path.join(os.tmpdir(), `${randomID}.aiff`);
     
-        await execFileAsync(config.sayCommand, ['-o', aiffFile, '-v', parsedQuery.voice, parsedQuery.text]);
+        await execFileAsync(config.sayCommand, ['-o', aiffFile, '-v', decodeURIComponent(parsedQuery.voice), decodeURIComponent(parsedQuery.text)]);
         const convertResult = await execFileAsync(
             config.ffmpegCommand,
             ['-i', aiffFile, '-f', 'mp3', '-acodec', 'libmp3lame', '-ab', '192000', '-ar', '44100', '-'],
